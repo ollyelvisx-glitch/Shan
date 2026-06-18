@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday Shannah!</title>
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c20, #15102a, #060409);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 20px;
+            overflow-y: auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 25px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Avatar styling */
+        .avatar-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 15px auto;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ff758c;
+            box-shadow: 0 8px 25px rgba(255, 117, 140, 0.4);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .badge {
+            background: linear-gradient(90deg, #ff758c, #ff7eb3);
+            display: inline-block;
+            padding: 5px 14px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #ff758c, #ff7eb3, #ffe4e1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .intro-text {
+            color: #b3b3cc;
+            font-size: 1rem;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        /* --- GALLERY SECTION --- */
+        .section-title {
+            font-size: 1.15rem;
+            color: #ff7eb3;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: left;
+            border-left: 3px solid #ff758c;
+            padding-left: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .gallery-item {
+            width: 100%;
+            height: 110px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.08);
+            border-color: #ff758c;
+            box-shadow: 0 5px 15px rgba(255, 117, 140, 0.3);
+        }
+
+        /* --- WORDS SECTION --- */
+        .words-block {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 117, 140, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        .words-block p {
+            color: #d1d1e0;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .words-block span {
+            display: block;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            color: #ff758c;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        /* --- MENU OPTIONS --- */
+        .menu-options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: white;
+            padding: 15px;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .option-btn:hover {
+            background: rgba(255, 117, 140, 0.08);
+            border-color: rgba(255, 117, 140, 0.3);
+            transform: translateX(3px);
+        }
+
+        .option-btn.selected {
+            background: linear-gradient(135deg, rgba(255, 117, 140, 0.15), rgba(255, 126, 179, 0.15));
+            border-color: #ff758c;
+            box-shadow: 0 0 15px rgba(255, 117, 140, 0.15);
+        }
+
+        .option-icon { font-size: 1.7rem; }
+        .option-details h3 { font-size: 0.95rem; margin-bottom: 2px; font-weight: 600; }
+        .option-details p { font-size: 0.8rem; color: #9494b8; }
+
+        .action-btn {
+            background: linear-gradient(45deg, #ff758c, #ff7eb3);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 6px 20px rgba(255, 117, 140, 0.3);
+            width: 100%;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 25px rgba(255, 117, 140, 0.5);
+        }
+
+        .result-screen { display: none; animation: fadeIn 0.5s ease-out; }
+    </style>
+</head>
+<body>
+
+    <div class="card" id="mainCard">
+        <!-- Main Profile Frame -->
+        <div class="avatar-container">
+            <img class="profile-pic" src="shannah.jpg" alt="Shannah">
+        </div>
+
+        <div class="badge">Chapter 2026</div>
+        <h1>Happy Birthday, Shannah!</h1>
+        <p class="intro-text">Cheers to celebrating you today! Wishing you an exceptional year full of growth, solid milestones, and constant happiness. ✨</p>
+        
+        <!-- GALLERY SECTION -->
+        <div class="section-title">The Gallery Grid</div>
+        <div class="gallery-grid">
+            <!-- GALLERY PHOTOS: Replace paths with actual image names -->
+            <img class="gallery-item" src="pic1.jpg" alt="Memory 1">
+            <img class="gallery-item" src="pic2.jpg" alt="Memory 2">
+            <img class="gallery-item" src="pic3.jpg" alt="Memory 3">
+        </div>
+
+        <!-- WORDS TO THE BD GAL -->
+        <div class="section-title">Words to the Birthday Girl</div>
+        <div class="words-block">
+            <p>"To an incredible friend who deserves the world. May this year step your game up, unlock every door you've been working toward, and bring total peace. Thank you for always being awesome!"</p>
+            <span>— From Olly 🤝</span>
+        </div>
+
+        <!-- INTERACTIVE COOKING MENU -->
+        <div class="section-title">Lock In Tomorrow's Birthday Meal</div>
+        <div class="menu-options">
+            <button class="option-btn" onclick="selectOption(this, 'Creamy Tuscan Chicken Pasta')">
+                <span class="option-icon">🍝</span>
+                <div class="option-details">
+                    <h3>Tuscan Chicken Pasta</h3>
+                    <p>Rich garlic cream sauce, tomatoes, & fresh spinach.</p>
+                </div>
+            </button>
+            <button class="option-btn" onclick="selectOption(this, 'Premium Beef Stir-Fry')">
+                <span class="option-icon">🥢</span>
+                <div class="option-details">
+                    <h3>Premium Beef Stir-Fry</h3>
+                    <p>Sizzling steak strips, crisp veggies, & steaming rice.</p>
+                </div>
+            </button>
+            <button class="option-btn" onclick="selectOption(this, 'Late Night Dessert Spread')">
+                <span class="option-icon">🍫</span>
+                <div class="option-details">
+                    <h3>Fudgy Dessert Spread</h3>
+                    <p>Warm chocolate brownies, vanilla scoop, & fresh berries.</p>
+                </div>
+            </button>
+        </div>
+
+        <button class="action-btn" onclick="submitChoice()">Send Selection to Chef Olly 🥂</button>
+    </div>
+
+    <!-- Confirmation Overlay View -->
+    <div class="card result-screen" id="resultCard">
+        <div class="badge">Order Confirmed</div>
+        <h1 style="font-size: 2rem;">Vibe Confirmed!</h1>
+        <p class="intro-text" id="successMessage" style="margin-top: 15px;"></p>
+        <button class="action-btn" onclick="burst()">More Confetti 🎉</button>
+    </div>
+
+    <script>
+        let selectedMeal = '';
+
+        // Auto explosion on payload arrival
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(burst, 400);
+        });
+
+        function selectOption(element, mealName) {
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedMeal = mealName;
+        }
+
+        function submitChoice() {
+            if (!selectedMeal) {
+                alert('Pick a menu option before locking it in!');
+                return;
+            }
+
+            document.getElementById('mainCard').style.display = 'none';
+            const resultCard = document.getElementById('resultCard');
+            resultCard.style.display = 'block';
+            
+            document.getElementById('successMessage').innerHTML = `Your selection for <strong>${selectedMeal}</strong> has been dispatched. Prep work starts now! 🎂`;
+            
+            burst();
+            setTimeout(burst, 350);
+        }
+
+        function burst() {
+            var duration = 1.5 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 4,
+                    angle: 60,
+                    spread: 60,
+                    origin: { x: 0, y: 0.85 },
+                    colors: ['#ff758c', '#ff7eb3', '#ffffff']
+                });
+                confetti({
+                    particleCount: 4,
+                    angle: 120,
+                    spread: 60,
+                    origin: { x: 1, y: 0.85 },
+                    colors: ['#ff758c', '#ff7eb3', '#ffffff']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            }());
+        }
+    </script>
+</body>
+</html>
